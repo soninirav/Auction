@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+{% load widget_tweaks %}
+
+{% block body %}
+
+    <h2>Create Listing</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+
+    <div style="width:400px;">
+   <form class="form" action="{% url 'create_listing' %}" method="POST">
+        {{ listing_form.title.label }}<br>
+        {{ listing_form.title|add_class:"form-control"}} <br>
+        {{ listing_form.description.label }}<br>
+        {{ listing_form.description|add_class:"form-control" }}<br>
+        {{ listing_form.starting_bid.label }}<br>
+        {{ listing_form.starting_bid|add_class:"form-control" }} <br>
+        {{ listing_form.image_url.label }}<br>
+        {{ listing_form.image_url|add_class:"form-control" }} <br>
+        {{ listing_form.category.label }}<br>
+        {{ listing_form.category|add_class:"form-control" }} <br>
+        {% csrf_token %}<br>
+        <input class="btn btn-primary" type="submit" value="Create">
+   </form>
+   </div>
+    
+
+{% endblock %}

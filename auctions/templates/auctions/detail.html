@@ -1,0 +1,132 @@
+{% extends "auctions/layout.html" %}
+{% load widget_tweaks %}
+{% block body %}
+
+
+<div class="row d-flex flex-wrap">
+  <div class="col-md-3">
+
+        <div class="card" style="width:21rem;">
+        <img class="card-img-bottom p-2" src="{{ data.image_url }}" alt="Card image cap">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-10">
+                    <h5 class="card-title">{{ data.title | title}}</h5> 
+                    <h6 class="card-subtitle mb-2 ">$ {{ data.starting_bid }}</h6>
+                </div>
+                {% comment %} <div class="col"></div><div class="col"></div><div class="col"></div> {% endcomment %}
+                
+                <div class="col-2">
+                    {% if item_in_watchlist %}
+                    <a href="{% url 'remove_from_watchlist' data.id %}" style="color:black;text-decoration:none;">
+                        <span class="material-icons" style="font-size:35px;">bookmark</span>
+                    {% else %}
+                    <a href="{% url 'add_to_watchlist' data.id %}" style="color:black;text-decoration:none;">
+                        <span class="material-icons" style="font-size:35px;">bookmark_border</span>
+                    {% endif %}
+                    </a>
+                </div>
+            </div>
+            <p class="card-text">{{ data.description}}</p>
+            <p class="card-text"><small class="text-muted">{{ data.date }}</small></p>
+        </div>
+        
+        </div>
+
+  </div>
+
+
+
+    <div class="col-md-9">
+        <div class="card">
+
+
+        {% if is_closed %}
+
+            <a href="#">
+                <button type="button" class="btn btn-secondary m-4 p-1" style="width:170px; height:35px; text-align:center;">Closed</button>
+            </a>
+
+            {% if winner == request.user.username %}
+                <h4 style="color:green; margin-left:20px">This Listing is won by You</h4><br>
+            {% else %}
+                <h4 style="color:green; margin-left:20px">This Listing is won by Other Person</h4><br>
+            {% endif %}
+
+            <h4 style="margin-left:20px;">Older Comments : </h4>
+            <ul>
+                {% for comment in comments %}
+                    <li>{{ comment.message }} - {{ comment.user }}</li>
+                {% endfor %}
+            </ul>
+
+        {% else %}
+
+          {% if is_owner == request.user %}
+                <a href="{% url 'close_listing' data.id %}">
+                 <button type="button" class="btn btn-danger m-4 p-1" style="width:170px; height:35px; text-align:center;">Close Listing</button>
+                </a>
+          {% endif %}
+
+           <div class="card-body">
+
+                {% if message%}
+
+                    <div class="alert alert-{{ color }} p-2" style="width:450px;">
+                        {{ message }}
+                    </div>
+
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    
+                    <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="ml-3 mt-1">Offer Bid : </div>
+                    <div class="ml-2">{{ bidform.offer_price|add_class:"form-control" }}</div>
+                    <div class="ml-2"><button class="btn btn btn-primary" type="submit">Bid</button></div>
+                    </form>
+                    </div>
+                    <br>
+
+
+                    <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                    <div class="ml-3 mt-1">Comment : </div>
+                    <div class="col-7">{{ comment_form.message|add_class:"form-control" }}</div>
+                    <div class=""><button class="btn  btn-primary" type="submit">Post</button></div>
+                    </form>
+                    </div>
+                    <br>
+
+                    <ul>
+                    {% for comment in comments %}
+                        <li>{{ comment.message }} - {{ comment.user }}</li>
+                    {% endfor %}
+                    </ul>
+
+                {% endif %}
+
+            </div>
+
+
+        {% endif %}
+
+
+           
+
+        </div>
+
+    </div>
+</div>
+
+
+    
+
+  
+    
+    
+
+{% endblock %}

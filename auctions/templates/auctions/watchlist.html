@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+
+
+<div class="d-flex flex-wrap">
+
+{% for item in watchlist_items %}
+        
+        <div class="card" style="width:21rem; margin:5px;">
+            <a href="{% url 'detail_listing' item.id %}" style="color:black; text-decoration:none;">
+            <img class="card-img-bottom p-2" src="{{ item.image_url }}" alt="Card image cap">
+            </a> 
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-10">
+                       
+                        <h5 class="card-title">{{ item.title|title }}</h5>
+                        <h6 class="card-subtitle mb-2 ">$ {{ item.starting_bid }}</h6>
+                    </div>
+                    {% comment %} <div class="col"></div><div class="col"></div><div class="col"></div> {% endcomment %}
+                    
+                    
+                    <div class="col-2">
+                        <a href="{% url 'remove_from_watchlist' item.id %}" style="color:black; text-decoration:none;">
+                            <span class="material-icons" style="font-size:35px;">bookmark</span>
+                        </a>
+                    </div>
+                    
+                </div>
+                <p class="card-text">{{ item.description}}</p>
+                <p class="card-text"><small class="text-muted">{{ item.date }}</small></p>
+            </div>
+        
+        </div>
+        
+{% endfor %}
+</div>
+    
+
+{% endblock %}
