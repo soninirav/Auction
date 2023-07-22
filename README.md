@@ -47,5 +47,3 @@ Logout functionality for users.
 ## **Demo**
 
 #### YouTube Link: https://www.youtube.com/watch?v=t2-m9cCHtb8
-
-![demoVideo](https://github.com/soninirav/Notes/blob/master/notesDemo.gif)
